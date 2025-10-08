@@ -45,12 +45,36 @@
       cursor: pointer;
     }
     th { background-color: #6f4e37; color: white; }
+    #sifreAlani {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+    }
+    #sifreAlani input {
+      padding: 6px;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    #sifreAlani button {
+      padding: 6px 12px;
+      background-color: #6f4e37;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>Kahve Ligi</h1>
 
-  <form id="ekleForm">
+  <div id="sifreAlani">
+    <p>Düzenleme yapmak için şifre girin:</p>
+    <input type="password" id="sifreGirdisi" placeholder="Şifre" />
+    <button onclick="sifreKontrol()">Giriş Yap</button>
+  </div>
+
+  <form id="ekleForm" style="display:none;">
     <input type="text" id="takimAd" placeholder="Takım Adı" required />
     <input type="number" id="oyun" placeholder="Oyun Sayısı" required />
     <input type="number" id="galibiyet" placeholder="Galibiyet" required />
@@ -73,9 +97,20 @@
   </table>
 
   <script>
-    const adminMod = true; // sadece senin için true, diğerleri için false yapılabilir
-
+    let adminMod = false;
     const tablo = document.querySelector("#ligTablosu tbody");
+
+    function sifreKontrol() {
+      const girilen = document.getElementById("sifreGirdisi").value;
+      if (girilen === "1010") {
+        adminMod = true;
+        document.getElementById("sifreAlani").style.display = "none";
+        document.getElementById("ekleForm").style.display = "flex";
+        tabloyuGuncelle();
+      } else {
+        alert("Şifre yanlış!");
+      }
+    }
 
     function veriYukle() {
       const kayitli = localStorage.getItem("kahveLigi");
