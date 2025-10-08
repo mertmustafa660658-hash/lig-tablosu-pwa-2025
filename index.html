@@ -6,13 +6,45 @@
   <title>Kahve Ligi</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; text-align: center; margin-bottom: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      table-layout: fixed;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+    th:nth-child(1), td:nth-child(1) { width: 20%; }
+    th:nth-child(2), td:nth-child(2) { width: 12%; }
+    th:nth-child(3), td:nth-child(3) { width: 12%; }
+    th:nth-child(4), td:nth-child(4) { width: 12%; }
+    th:nth-child(5), td:nth-child(5) { width: 12%; }
+    th:nth-child(6), td:nth-child(6) { width: 12%; }
+
+    input { padding: 4px; text-align: center; font-size: 14px; width: 90%; }
+    #ekleForm {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    #ekleForm input {
+      flex: 1;
+      min-width: 100px;
+    }
+    #ekleForm button {
+      padding: 6px 12px;
+      background-color: #6f4e37;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
     th { background-color: #6f4e37; color: white; }
-    input { padding: 4px; text-align: center; }
-    #ekleForm { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-    #ekleForm input { flex: 1; min-width: 100px; }
-    #ekleForm button { padding: 6px 12px; background-color: #6f4e37; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
