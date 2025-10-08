@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Düzenlenebilir Süper Lig Tablosu</title>
+  <title>Kahve Ligi</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; text-align: center; }
+    table { width: 100%; border-collapse: collapse; text-align: center; margin-bottom: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; }
-    th { background-color: #007bff; color: white; }
-    input { width: 80%; padding: 4px; text-align: center; }
+    th { background-color: #6f4e37; color: white; }
+    input { padding: 4px; text-align: center; }
+    #ekleForm { display: flex; gap: 10px; flex-wrap: wrap; }
+    #ekleForm input { flex: 1; min-width: 100px; }
+    #ekleForm button { padding: 6px 12px; background-color: #6f4e37; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h1>Düzenlenebilir Süper Lig Tablosu</h1>
+  <h1>Kahve Ligi</h1>
   <table id="ligTablosu">
     <thead>
       <tr>
@@ -28,6 +31,14 @@
     <tbody></tbody>
   </table>
 
+  <form id="ekleForm">
+    <input type="text" id="takimAd" placeholder="Takım Adı" required />
+    <input type="number" id="oyun" placeholder="Oyun Sayısı" required />
+    <input type="number" id="galibiyet" placeholder="Galibiyet" required />
+    <input type="number" id="maglubiyet" placeholder="Mağlubiyet" required />
+    <button type="submit">Takım Ekle</button>
+  </form>
+
   <script>
     const takimlar = [
       { ad: "Fenerbahçe", oyun: 5, galibiyet: 4, maglubiyet: 1 },
@@ -41,7 +52,7 @@
     function tabloyuGuncelle() {
       tablo.innerHTML = "";
       takimlar.forEach((takim, index) => {
-        const puan = takim.galibiyet * 3;
+        const puan = takim.galibiyet * 1;
         const yuzde = ((takim.galibiyet / takim.oyun) * 100).toFixed(1) + "%";
         const satir = document.createElement("tr");
 
@@ -61,6 +72,19 @@
       takimlar[index][alan] = alan === "ad" ? deger : parseInt(deger);
       tabloyuGuncelle();
     }
+
+    document.getElementById("ekleForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const yeniTakim = {
+        ad: document.getElementById("takimAd").value,
+        oyun: parseInt(document.getElementById("oyun").value),
+        galibiyet: parseInt(document.getElementById("galibiyet").value),
+        maglubiyet: parseInt(document.getElementById("maglubiyet").value)
+      };
+      takimlar.push(yeniTakim);
+      tabloyuGuncelle();
+      this.reset();
+    });
 
     tabloyuGuncelle();
   </script>
