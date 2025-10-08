@@ -40,14 +40,19 @@
   </form>
 
   <script>
-    const takimlar = [
-      { ad: "Fenerbahçe", oyun: 5, galibiyet: 4, maglubiyet: 1 },
-      { ad: "Galatasaray", oyun: 5, galibiyet: 3, maglubiyet: 2 },
-      { ad: "Trabzonspor", oyun: 5, galibiyet: 1, maglubiyet: 4 },
-      { ad: "Beşiktaş", oyun: 5, galibiyet: 2, maglubiyet: 3 }
-    ];
-
     const tablo = document.querySelector("#ligTablosu tbody");
+
+    function veriYukle() {
+      const kayitli = localStorage.getItem("kahveLigi");
+      return kayitli ? JSON.parse(kayitli) : [
+        { ad: "Fenerbahçe", oyun: 5, galibiyet: 4, maglubiyet: 1 },
+        { ad: "Galatasaray", oyun: 5, galibiyet: 3, maglubiyet: 2 },
+        { ad: "Trabzonspor", oyun: 5, galibiyet: 1, maglubiyet: 4 },
+        { ad: "Beşiktaş", oyun: 5, galibiyet: 2, maglubiyet: 3 }
+      ];
+    }
+
+    let takimlar = veriYukle();
 
     function tabloyuGuncelle() {
       tablo.innerHTML = "";
@@ -66,6 +71,7 @@
         `;
         tablo.appendChild(satir);
       });
+      localStorage.setItem("kahveLigi", JSON.stringify(takimlar));
     }
 
     function veriGuncelle(index, alan, deger) {
