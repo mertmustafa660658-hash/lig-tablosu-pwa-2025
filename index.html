@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Süper Lig Tablosu</title>
+  <title>Düzenlenebilir Süper Lig Tablosu</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
     table { width: 100%; border-collapse: collapse; text-align: center; }
     th, td { border: 1px solid #ccc; padding: 8px; }
     th { background-color: #007bff; color: white; }
+    input { width: 80%; padding: 4px; text-align: center; }
   </style>
 </head>
 <body>
-  <h1>Süper Lig Tablosu</h1>
+  <h1>Düzenlenebilir Süper Lig Tablosu</h1>
   <table id="ligTablosu">
     <thead>
       <tr>
@@ -31,27 +32,37 @@
     const takimlar = [
       { ad: "Fenerbahçe", oyun: 5, galibiyet: 4, maglubiyet: 1 },
       { ad: "Galatasaray", oyun: 5, galibiyet: 3, maglubiyet: 2 },
-      { ad: "Trabzonspor", oyun: 5, galibiyet: 2, maglubiyet: 3 },
-      { ad: "Beşiktaş", oyun: 5, galibiyet: 1, maglubiyet: 4 }
+      { ad: "Trabzonspor", oyun: 5, galibiyet: 1, maglubiyet: 4 },
+      { ad: "Beşiktaş", oyun: 5, galibiyet: 2, maglubiyet: 3 }
     ];
 
     const tablo = document.querySelector("#ligTablosu tbody");
 
-    takimlar.forEach(takim => {
-      const puan = takim.galibiyet * 1;
-      const yuzde = ((takim.galibiyet / takim.oyun) * 100).toFixed(1) + "%";
-      const satir = `
-        <tr>
-          <td>${takim.ad}</td>
-          <td>${takim.oyun}</td>
-          <td>${takim.galibiyet}</td>
-          <td>${takim.maglubiyet}</td>
+    function tabloyuGuncelle() {
+      tablo.innerHTML = "";
+      takimlar.forEach((takim, index) => {
+        const puan = takim.galibiyet * 3;
+        const yuzde = ((takim.galibiyet / takim.oyun) * 100).toFixed(1) + "%";
+        const satir = document.createElement("tr");
+
+        satir.innerHTML = `
+          <td><input value="${takim.ad}" onchange="veriGuncelle(${index}, 'ad', this.value)" /></td>
+          <td><input type="number" value="${takim.oyun}" onchange="veriGuncelle(${index}, 'oyun', this.value)" /></td>
+          <td><input type="number" value="${takim.galibiyet}" onchange="veriGuncelle(${index}, 'galibiyet', this.value)" /></td>
+          <td><input type="number" value="${takim.maglubiyet}" onchange="veriGuncelle(${index}, 'maglubiyet', this.value)" /></td>
           <td>${puan}</td>
           <td>${yuzde}</td>
-        </tr>
-      `;
-      tablo.innerHTML += satir;
-    });
+        `;
+        tablo.appendChild(satir);
+      });
+    }
+
+    function veriGuncelle(index, alan, deger) {
+      takimlar[index][alan] = alan === "ad" ? deger : parseInt(deger);
+      tabloyuGuncelle();
+    }
+
+    tabloyuGuncelle();
   </script>
 </body>
 </html>
