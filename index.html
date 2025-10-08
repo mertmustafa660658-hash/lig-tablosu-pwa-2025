@@ -10,13 +10,22 @@
     th, td { border: 1px solid #ccc; padding: 8px; }
     th { background-color: #6f4e37; color: white; }
     input { padding: 4px; text-align: center; }
-    #ekleForm { display: flex; gap: 10px; flex-wrap: wrap; }
+    #ekleForm { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
     #ekleForm input { flex: 1; min-width: 100px; }
     #ekleForm button { padding: 6px 12px; background-color: #6f4e37; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
   <h1>Kahve Ligi</h1>
+
+  <form id="ekleForm">
+    <input type="text" id="takimAd" placeholder="Takım Adı" required />
+    <input type="number" id="oyun" placeholder="Oyun Sayısı" required />
+    <input type="number" id="galibiyet" placeholder="Galibiyet" required />
+    <input type="number" id="maglubiyet" placeholder="Mağlubiyet" required />
+    <button type="submit">Takım Ekle</button>
+  </form>
+
   <table id="ligTablosu">
     <thead>
       <tr>
@@ -31,15 +40,9 @@
     <tbody></tbody>
   </table>
 
-  <form id="ekleForm">
-    <input type="text" id="takimAd" placeholder="Takım Adı" required />
-    <input type="number" id="oyun" placeholder="Oyun Sayısı" required />
-    <input type="number" id="galibiyet" placeholder="Galibiyet" required />
-    <input type="number" id="maglubiyet" placeholder="Mağlubiyet" required />
-    <button type="submit">Takım Ekle</button>
-  </form>
-
   <script>
+    const adminMod = true; // sadece senin için true, diğerleri için false yapılabilir
+
     const tablo = document.querySelector("#ligTablosu tbody");
 
     function veriYukle() {
@@ -55,22 +58,37 @@
     let takimlar = veriYukle();
 
     function tabloyuGuncelle() {
+      takimlar.sort((a, b) => (b.galibiyet / b.oyun) - (a.galibiyet / a.oyun));
       tablo.innerHTML = "";
+
       takimlar.forEach((takim, index) => {
         const puan = takim.galibiyet * 1;
         const yuzde = ((takim.galibiyet / takim.oyun) * 100).toFixed(1) + "%";
         const satir = document.createElement("tr");
 
-        satir.innerHTML = `
-          <td><input value="${takim.ad}" onchange="veriGuncelle(${index}, 'ad', this.value)" /></td>
-          <td><input type="number" value="${takim.oyun}" onchange="veriGuncelle(${index}, 'oyun', this.value)" /></td>
-          <td><input type="number" value="${takim.galibiyet}" onchange="veriGuncelle(${index}, 'galibiyet', this.value)" /></td>
-          <td><input type="number" value="${takim.maglubiyet}" onchange="veriGuncelle(${index}, 'maglubiyet', this.value)" /></td>
-          <td>${puan}</td>
-          <td>${yuzde}</td>
-        `;
+        if (adminMod) {
+          satir.innerHTML = `
+            <td><input value="${takim.ad}" onchange="veriGuncelle(${index}, 'ad', this.value)" /></td>
+            <td><input type="number" value="${takim.oyun}" onchange="veriGuncelle(${index}, 'oyun', this.value)" /></td>
+            <td><input type="number" value="${takim.galibiyet}" onchange="veriGuncelle(${index}, 'galibiyet', this.value)" /></td>
+            <td><input type="number" value="${takim.maglubiyet}" onchange="veriGuncelle(${index}, 'maglubiyet', this.value)" /></td>
+            <td>${puan}</td>
+            <td>${yuzde}</td>
+          `;
+        } else {
+          satir.innerHTML = `
+            <td>${takim.ad}</td>
+            <td>${takim.oyun}</td>
+            <td>${takim.galibiyet}</td>
+            <td>${takim.maglubiyet}</td>
+            <td>${puan}</td>
+            <td>${yuzde}</td>
+          `;
+        }
+
         tablo.appendChild(satir);
       });
+
       localStorage.setItem("kahveLigi", JSON.stringify(takimlar));
     }
 
